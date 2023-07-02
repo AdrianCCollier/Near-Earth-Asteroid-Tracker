@@ -1,31 +1,36 @@
 let sun;
 let earth;
+let vel;
+let speed = 0
 
 function setup() {
-     let canvas = createCanvas(windowWidth * 0.8, windowHeight * 0.8)
-    canvas.parent('terminal-window');
-
-    sun = {
-        x: width / 20,
-        y: height / 20,
-        radius: 50
-    };
-
-    earth = {
-        x: sun.x + 100,
-        y: sun.y,
-        radius: 25,
-    };
+    createCanvas(800, 1000)
+    sun = createVector(width / 2, height / 2)
+    earth = createVector(width / 2, height / 2 + 200)
+    vel = createVector(2, 0)
 }
 
 function draw() {
-    background(50);
+    background(0)
+    let acc = p5.Vector.sub(sun, earth)
+    acc.setMag(0.01)
+    vel.add(acc)
+    earth.add(vel)
 
     // Draw the sun
-    fill(255, 204, 0);
-    ellipse(sun.x, sun.y, sun.radius * 2, sun.radius * 2);
+    ellipse(sun.x, sun.y, 100, 100)
 
     // Draw the earth
-    fill(0, 0, 255);
-    ellipse(earth.x, earth.y, earth.radius * 2, earth.radius * 2);
+    ellipse(earth.x, earth.y, 50, 50)
+    
+    speed++
+}
+
+function stop() {
+  vel.mult(0)
+}
+
+function resume() {
+  vel = p5.Vector.sub(sun, earth)
+  vel.setMag(0.01)
 }
